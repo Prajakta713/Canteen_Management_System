@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* CSS styles */
         * {
@@ -83,8 +84,29 @@
         footer {
             background-color: #333;
             color: #fff;
-            text-align: center;
+            text-align: left;
             padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .social-icons {
+            display: flex;
+            align-items: center; /* Center the icons vertically */
+        }
+        
+        .social-icons a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 10px; /* Add space between icons */
+        }
+        
+        .social-icons a i {
+            font-size: 2em; /* Increase the icon size */
+        }
+        .map {
+            color: #fff;
+            order:3;
         }
     </style>
 </head>
@@ -112,6 +134,15 @@
     </div>
 </div>
 <footer>
+    <div class="social-icons">
+        <a href="#" class="icon"><i class="fab fa-facebook-f fa-2x"></i></a>
+        <a href="#" class="icon"><i class="fab fa-twitter fa-2x"></i></a>
+        <a href="#" class="icon"><i class="fab fa-instagram fa-2x"></i></a>
+        <!-- Add more social media icons as needed -->
+    </div>
+    <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d380.5616486938182!2d72.86950504203037!3d19.02168453884402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7cfdb3592ae71%3A0x24a513f82882be61!2sVidyalankar%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1714496101024!5m2!1sen!2sin" width="600" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
     <p>Managed by Shri. Sukh Sagar Hospitality Services</p>
 </footer>
 
