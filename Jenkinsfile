@@ -13,15 +13,13 @@ pipeline {
             }
         }
 
-        stage('Set Up Virtual Environment') {
-            steps {
-                script {
-                    // Create a virtual environment and activate it
-                    sh 'python -m venv venv'
-                    sh '.\\venv\\Scripts\\activate'  // Windows (or `source venv/bin/activate` on Linux/Mac)
-                }
-            }
-        }
+stage('Set Up Virtual Environment') {
+    steps {
+        bat 'python -m venv venv'
+        bat 'venv\\Scripts\\activate'
+    }
+}
+
 
         stage('Install Dependencies') {
             steps {
