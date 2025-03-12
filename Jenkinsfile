@@ -2,30 +2,36 @@ pipeline {
     agent any
 
     environment {
-        PYTHON_HOME = 'C:\\Python39' // Set to your Python version
-        PATH = "${env.PYTHON_HOME}\\Scripts:${env.PYTHON_HOME}:${env.PATH}"
+        // Set the directory for the virtual environment
+        VENV_DIR = 'venv'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/Prajakta713/Canteen_Management_System.git'
+                git 'https://github.com/Prajakta713/Canteen_Management_System.git'
             }
         }
 
-stage('Set Up Virtual Environment') {
-    steps {
-        bat 'python -m venv venv'
-        bat 'venv\\Scripts\\activate'
-    }
-}
-
+        stage('Set Up Virtual Environment') {
+            steps {
+                script {
+                    // Create virtual environment if it doesn't exist
+                    if (!fileExists("${VENV_DIR}/Scripts/activate")) {
+                        sh 'python -m venv ${VENV_DIR}'
+                    }
+                }
+            }
+        }
 
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Install dependencies
-                    sh '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
+                    // Install dependencies in the virtual environment
+                    sh '''
+                        ./${VENV_DIR}/Scripts/activate
+                        pip install -r requirements.txt
+                    '''
                 }
             }
         }
@@ -33,32 +39,44 @@ stage('Set Up Virtual Environment') {
         stage('Run Tests') {
             steps {
                 script {
-                    // Run Django tests
-                    sh '.\\venv\\Scripts\\activate && python manage.py test'
+                    // Run tests using pytest
+                    sh '''
+                        ./${VENV_DIR}/Scripts/activate
+                        pytest --maxfail=1 --disable-warnings -q
+                    '''
                 }
             }
         }
 
         stage('Publish Test Results') {
             steps {
-                junit '**/test-*.xml'  // Publish JUnit-compatible test results
+                // Assuming you have a test report (XML format) generated, you can publish the test results
+                junit '**/test-*.xml'  // Adjust path if needed
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging environment'
-                // Add your deployment steps here
+                script {
+                    // Your deployment logic here
+                    echo 'Deploying to staging environment...'
+                }
             }
         }
     }
 
     post {
-        success {
-            echo 'Build and tests succeeded!'
+        always {
+            // Clean up virtual environment after build
+            cleanWs()
         }
+
+        success {
+            echo 'Build and tests passed successfully!'
+        }
+
         failure {
-            echo 'Build or tests failed!'
+            echo 'Build or tests failed. Please check the logs.'
         }
     }
 }
